@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class HomePage {
-  final PreferredSizeWidget appBar;
-  final List<Widget> tabs;
+  final AppBar appBar;
+  final int length;
   final List<Widget> children;
 
   HomePage({
     @required this.appBar,
-    @required this.tabs,
     @required this.children,
+    @required this.length,
   });
 }

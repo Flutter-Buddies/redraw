@@ -32,61 +32,69 @@ class _RedrawPageState extends State<RedrawPage> {
     HomePage(
       appBar: AppBar(
         title: Text("Home"),
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Home"),
+            Tab(text: "Popular"),
+          ],
+        ),
       ),
-      tabs: [
-        Tab(text: "Home"),
-        Tab(text: "Popular"),
-      ],
       children: [
         Center(),
         Center(),
       ],
+      length: 2,
     ),
     HomePage(
       appBar: AppBar(
         title: Text("Subreddits"),
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Subscriptions"),
+            Tab(text: "Custom Feeds"),
+          ],
+        ),
       ),
-      tabs: [
-        Tab(text: "Home"),
-        Tab(text: "Popular"),
-      ],
       children: [
         Center(),
         Center(),
       ],
+      length: 2,
     ),
     HomePage(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("Create"),
+        bottom: TabBar(
+          tabs: [],
+        ),
       ),
-      tabs: [
-        Tab(text: "Home"),
-        Tab(text: "Popular"),
-      ],
-      children: [
-        Center(),
-        Center(),
-      ],
+      children: [],
+      length: 0,
     ),
     HomePage(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("Messages"),
+        bottom: TabBar(
+          tabs: [
+            Tab(text: "Notifications"),
+            Tab(text: "Messages"),
+            Tab(text: "Mod mail"),
+          ],
+        ),
       ),
-      tabs: [
-        Tab(text: "Home"),
-        Tab(text: "Popular"),
-      ],
       children: [
         Center(),
         Center(),
+        Center(),
       ],
+      length: 3,
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _pages[_pageIndex].tabs.length,
+      length: _pages[_pageIndex].length,
       child: Scaffold(
         appBar: _pages[_pageIndex].appBar,
         drawer: Drawer(
@@ -94,10 +102,16 @@ class _RedrawPageState extends State<RedrawPage> {
             children: [
               UserAccountsDrawerHeader(
                 currentAccountPicture: CircleAvatar(
-                  child: Icon(Icons.account_circle),
+                  child: LayoutBuilder(
+                    builder: (context, constraint) => Icon(
+                      Icons.account_circle,
+                      size: constraint.biggest.height,
+                    ),
+                  ),
                 ),
                 accountName: Text('Anonymous'),
                 accountEmail: Text(''),
+                onDetailsPressed: _onDetailsPressed,
               ),
               AboutListTile(
                 applicationName: "Redraw",
@@ -123,8 +137,8 @@ class _RedrawPageState extends State<RedrawPage> {
             ),
             BottomNavigationBarItem(
               label: "Create",
-              activeIcon: Icon(Icons.add),
-              icon: Icon(Icons.add),
+              activeIcon: Icon(Icons.add_circle),
+              icon: Icon(Icons.add_circle_outline),
             ),
             BottomNavigationBarItem(
               label: "Messages",
@@ -138,6 +152,13 @@ class _RedrawPageState extends State<RedrawPage> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _onDetailsPressed() async {}
 
   void _onTapNavigation(int index) {
     setState(() {
