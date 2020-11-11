@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'feeds/home_feed.dart';
 import 'home_page.dart';
+import 'main_drawer.dart';
+import 'main_navigation_bar.dart';
+import 'providers/reddit_state.dart';
 
 void main() async {
   runApp(RedrawApp());
@@ -9,11 +14,14 @@ void main() async {
 class RedrawApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Redraw',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      home: RedrawPage(),
+    return Provider<RedditState>(
+      create: (_) => RedditState(),
+      child: MaterialApp(
+        title: 'Redraw',
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        home: RedrawPage(),
+      ),
     );
   }
 }
@@ -26,7 +34,7 @@ class RedrawPage extends StatefulWidget {
 }
 
 class _RedrawPageState extends State<RedrawPage> {
-  int _pageIndex = 0;
+  int _currentIndex = 0;
 
   final List<HomePage> _pages = [
     HomePage(
@@ -40,7 +48,7 @@ class _RedrawPageState extends State<RedrawPage> {
         ),
       ),
       children: [
-        Center(),
+        HomeFeed(),
         Center(),
       ],
       length: 2,
@@ -64,9 +72,6 @@ class _RedrawPageState extends State<RedrawPage> {
     HomePage(
       appBar: AppBar(
         title: Text("Create"),
-        bottom: TabBar(
-          tabs: [],
-        ),
       ),
       children: [],
       length: 0,
@@ -94,59 +99,15 @@ class _RedrawPageState extends State<RedrawPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _pages[_pageIndex].length,
+      length: _pages[_currentIndex].length,
       child: Scaffold(
-        appBar: _pages[_pageIndex].appBar,
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                  child: LayoutBuilder(
-                    builder: (context, constraint) => Icon(
-                      Icons.account_circle,
-                      size: constraint.biggest.height,
-                    ),
-                  ),
-                ),
-                accountName: Text('Anonymous'),
-                accountEmail: Text(''),
-                onDetailsPressed: _onDetailsPressed,
-              ),
-              AboutListTile(
-                applicationName: "Redraw",
-                applicationVersion: "0.0.0",
-              )
-            ],
-          ),
-        ),
+        appBar: _pages[_currentIndex].appBar,
+        drawer: MainDrawer(),
         body: TabBarView(
-          children: _pages[_pageIndex].children,
+          children: _pages[_currentIndex].children,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-              label: "Home",
-              activeIcon: Icon(Icons.home_filled),
-              icon: Icon(Icons.home_outlined),
-            ),
-            BottomNavigationBarItem(
-              label: "Subreddits",
-              activeIcon: Icon(Icons.list),
-              icon: Icon(Icons.list_outlined),
-            ),
-            BottomNavigationBarItem(
-              label: "Create",
-              activeIcon: Icon(Icons.add_circle),
-              icon: Icon(Icons.add_circle_outline),
-            ),
-            BottomNavigationBarItem(
-              label: "Messages",
-              activeIcon: Icon(Icons.mail),
-              icon: Icon(Icons.mail_outline),
-            )
-          ],
-          currentIndex: _pageIndex,
+        bottomNavigationBar: MainNavigationBar(
+          currentIndex: _currentIndex,
           onTap: _onTapNavigation,
         ),
       ),
@@ -158,11 +119,9 @@ class _RedrawPageState extends State<RedrawPage> {
     super.initState();
   }
 
-  void _onDetailsPressed() async {}
-
   void _onTapNavigation(int index) {
     setState(() {
-      _pageIndex = index;
+      _currentIndex = index;
     });
   }
 }
