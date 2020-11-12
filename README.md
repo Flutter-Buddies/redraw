@@ -17,6 +17,6 @@ const String clientId = "";
 /// differentiate between client instances. This should be relatively unique.
 const String userAgent = "";
 
-/// [redirectUri] is the redirect URI associated with your Reddit application.
+/// `redirectUri` is the redirect URI associated with your Reddit application.
 final Uri redirectUri = Uri.parse("");
 ```

@@ -5,35 +5,36 @@ import 'feeds/home_feed.dart';
 import 'home_page.dart';
 import 'main_drawer.dart';
 import 'main_navigation_bar.dart';
-import 'providers/reddit_state.dart';
+import 'services/reddit.service.dart';
 
 void main() async {
-  runApp(RedrawApp());
+  runApp(App());
 }
 
-class RedrawApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<RedditState>(
-      create: (_) => RedditState(),
+    return ChangeNotifierProvider<RedditService>(
+      create: (_) => RedditService(),
+      lazy: false,
       child: MaterialApp(
         title: 'Redraw',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        home: RedrawPage(),
+        home: MainPage(),
       ),
     );
   }
 }
 
-class RedrawPage extends StatefulWidget {
-  RedrawPage({Key key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({Key key}) : super(key: key);
 
   @override
-  _RedrawPageState createState() => _RedrawPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _RedrawPageState extends State<RedrawPage> {
+class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
   final List<HomePage> _pages = [
